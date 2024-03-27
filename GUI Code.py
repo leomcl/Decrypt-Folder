@@ -153,7 +153,7 @@ def clearregistration():
 
 # intialize variables
 global scores
-scores = [("leo", 99), ("lauren", 65), ("felix", 45)]
+scores = []
 theTeamName = "leomcl"
                         
 root = Tk()
@@ -183,7 +183,7 @@ loginimage = 'decrypt_logo.png'
 loginlogo = PhotoImage(file = loginimage)
 smallerloginlogo = loginlogo.subsample(1,1)
 loginlogolabel = Label(LoginFrame, image = smallerloginlogo)
-loginlogolabel.grid(row =1, column =0, columnspan = 2)
+# loginlogolabel.grid(row =1, column =0, columnspan = 2)
 
 
 #enter username and password
@@ -219,7 +219,7 @@ regimage = 'team logo 1.png'
 escapelogo = PhotoImage(file = regimage)
 smallerescapelogo = escapelogo.subsample(1,1)
 reglogolabel = Label(RegistrationFrame, image = smallerescapelogo)
-reglogolabel.grid(row = 1, column = 0, columnspan = 2)
+# reglogolabel.grid(row = 1, column = 0, columnspan = 2)
 
 #insert labels and entry boxes
 teamnamelabel = Label(RegistrationFrame, text = 'Enter team name: ', fg = '#e9cdb3', bg = '#070945', font = 'Verdana 24 bold')
@@ -261,16 +261,16 @@ challenge2title_label.grid(row = 0, column = 0, columnspan = 2)
 
 # Define the quiz questions and answers
 quiz_data = [
-    {"question": "Question 1: Who won the 1938 Football World Cup?", "options": ["West Germany", "Italy", "France", "Brazil"], 'correct_option': 'Italy'},
-    {"question": "Question 2: Which M&M colour is the rarest?", "options": ["Colourless", "Brown", "Blue", "Orange"], "correct_option": 'Brown'},
-    {"question": "Question 3: What is Arachibutyrophobia a fear of?", "options": ["Peanut butter sticking on the roof of the mouth", "Spiders", "Apples", "Keys"], "correct_option": 'Peanut butter sticking on the roof of the mouth'},
-    {"question": "Question 4: Which exercise puts most mechanical leverage on the lumbar part of the lats?", "options": ["Mag grip pulldown", "Single arm neutral row", "Incline Barbell Row", "Walking"], "correct_option": 'Mag grip pulldown'},
-    {"question": "Question 5: What dessert did Spongebob and Patrick get in the first movie?", "options": ["Ice cream", "Crabby Patty delight", "Goober berry", "Triple Gooberberry Sunrise"], "correct_option": 'Triple Gooberberry Sunrise'},
-    {"question": "Question 6: Where did the crown go in the first Spongebob movie?", "options": ["Crusty Krab", "Shell City", "Chum Bucket", "Gary's shell"], "correct_option": 'Shell City'},
-    {"question": "Question 7: Who was the boss at the Grotto?", "options": ["Midas", "Brutus", "Jules", "Deadpool"], "correct_option": 'Brutus'},
-    {"question": "Question 8: Who are the time twins in Lego Ninjago?", "options": ["The Clock Bros", "Tick and Tock", "Krux and Acronix", "None of the above"], "correct_option": 'Krux and Acronix'},
-    {"question": "Question 9: Who has the most European goals excluding friendlies?", "options": ["CR7", "Suarez", "Messi", "Harry Maguire"], "correct_option": 'Messi'},
-    {"question": "Question 10: What is season 5 of Ninjago called?", "options": ["Uncharted", "Tournament of Elements", "Legacy of the Green Ninja", "Possession"], "correct_option": 'Possession'},
+    {"question": "Q 1: Who won the 1938 Football World Cup?", "options": ["West Germany", "Italy", "France", "Brazil"], 'correct_option': 'Italy'},
+    {"question": "Q 2: Which M&M colour is the rarest?", "options": ["Colourless", "Brown", "Blue", "Orange"], "correct_option": 'Brown'},
+    {"question": "Q 3: What is Arachibutyrophobia a fear of?", "options": ["Peanut butter sticking on the roof of the mouth", "Spiders", "Apples", "Keys"], "correct_option": 'Peanut butter sticking on the roof of the mouth'},
+    {"question": "Q 4: Which exercise puts most mechanical leverage on the lumbar part of the lats?", "options": ["Mag grip pulldown", "Single arm neutral row", "Incline Barbell Row", "Walking"], "correct_option": 'Mag grip pulldown'},
+    {"question": "Q 5: What dessert did Spongebob and Patrick get in the first movie?", "options": ["Ice cream", "Crabby Patty delight", "Goober berry", "Triple Gooberberry Sunrise"], "correct_option": 'Triple Gooberberry Sunrise'},
+    {"question": "Q 6: Where did the crown go in the first Spongebob movie?", "options": ["Crusty Krab", "Shell City", "Chum Bucket", "Gary's shell"], "correct_option": 'Shell City'},
+    {"question": "Q 7: Who was the boss at the Grotto?", "options": ["Midas", "Brutus", "Jules", "Deadpool"], "correct_option": 'Brutus'},
+    {"question": "Q 8: Who are the time twins in Lego Ninjago?", "options": ["The Clock Bros", "Tick and Tock", "Krux and Acronix", "None of the above"], "correct_option": 'Krux and Acronix'},
+    {"question": "Q 9: Who has the most European goals excluding friendlies?", "options": ["CR7", "Suarez", "Messi", "Harry Maguire"], "correct_option": 'Messi'},
+    {"question": "Q 10: What is season 5 of Ninjago called?", "options": ["Uncharted", "Tournament of Elements", "Legacy of the Green Ninja", "Possession"], "correct_option": 'Possession'},
 
     # Add more questions and options here
 ]
@@ -289,13 +289,13 @@ def check_answers():
 
     messagebox.showinfo('Quiz Result', f'Your score: {challenge1score}/{len(quiz_data)}')
     score = (challenge1score/len(quiz_data)) * 100
-    scores.append((selected, score))
+    scores.append((selected, int(score)))
 
 
 # Create labels and dropdown menus for each question
 for i, question_data in enumerate(quiz_data):
-    question_label = Label(Challenge2Frame, text=question_data['question'], fg='#e9cdb3', bg='#070945', font='Verdana 18 bold')
-    question_label.grid(row=i+2, column=0, sticky='W', pady=10)
+    question_label = Label(Challenge2Frame, text=question_data['question'], fg='#e9cdb3', bg='#070945', font='Verdana 12 bold')
+    question_label.grid(row=i+2, column=0, sticky='W', pady=5)
    
     options = question_data['options']
     user_answer = user_answers[i]
@@ -326,8 +326,9 @@ timer_label.grid(row= 1, column= 1, columnspan=2, pady=10)
 
 # Function to start the timer thread
 def start_timer():
-    timer_thread = threading.Thread(target=update_timer)
-    timer_thread.start()
+    # timer_thread = threading.Thread(target=update_timer)
+    # timer_thread.start()
+    pass
 
 # Create a submit button to check answers
 submit_button = Button(Challenge2Frame, text='Submit', fg='#070945', bg='#e9cdb3', width=15, font='Verdana 18 bold', command=check_answers)
@@ -376,7 +377,7 @@ def check_reaction_time(event):
         proceed_button.config(state="normal")
         # record score 
         score = (1 - reaction_time) * 100
-        scores.append((selected, score))
+        scores.append((selected, int(score)))
 
     else:
         reaction_time_label.config(text=f'Reaction Time: {reaction_time:.2f} seconds')
@@ -408,24 +409,25 @@ proceed_button.grid(row=5, column=0, pady=10)
 #variables for challange 3
 score = 0
 game_running = False
-game_duration = 20  # in seconds
+game_duration = 5  # in seconds
 mole_buttons = []
 
 # fucntions for challange 3
 def start_game():
-    global score, game_running
-    score = 0
+    global moleScore, game_running
+    moleScore = 0
     game_running = True
     update_score_label()
-    mole_frame.after(game_duration * 1000, end_game)
+    root.after(game_duration * 1000, end_game)
     randomly_populate_moles()
 
 def end_game():
     global game_running
     game_running = False
-    messagebox.showinfo("Game Over", f"Game Over! Your final score is {score}")
-    score = (score/30) * 100
-    scores.append((selected, score))
+    print("endeddddddddddd")
+    score = (moleScore/30) * 100
+    messagebox.showinfo("Game Over", f"Game Over! Your final score is {moleScore}")
+    scores.append((selected, int(score)))
     proceed_to_leaderboard_button.config(state="normal")
     reset_moles()
 
@@ -453,13 +455,13 @@ def whack_mole(row, col):
     if game_running:
         button = mole_buttons[row * 3 + col]
         if button["text"] == "Mole":
-            global score
-            score += 1
+            global moleScore
+            moleScore += 1
             update_score_label()
             hide_mole(button)
 
 def update_score_label():
-    score_label["text"] = f"Score: {score}"
+    score_label["text"] = f"Score: {moleScore}"
 
 def reset_moles():
     for mole_button in mole_buttons:
@@ -490,7 +492,7 @@ start_whack_a_mole_button = Button(Challenge3Frame, text='Start Whack-a-Mole', f
 start_whack_a_mole_button.grid(row=2, column=0, columnspan=2, pady=10)
 
 # Create a Proceed to Leaderboard button (initially disabled)
-proceed_to_leaderboard_button = Button(Challenge3Frame, text='Proceed to Leaderboard', fg='#070945', bg='#e9cdb3', width=30, font='Verdana 18 bold', state='disabled', command=lambda: raise_leadeboard_frame(LeaderboardFrame))
+proceed_to_leaderboard_button = Button(Challenge3Frame, text='Proceed to Leaderboard', fg='#070945', bg='#e9cdb3', width=30, font='Verdana 18 bold', state='disabled', command=lambda: raise_leadeboard_frame())
 proceed_to_leaderboard_button.grid(row=4, column=0, columnspan=2, pady=10)
 
 ######################################################################################################################################################################################################################################
@@ -505,9 +507,6 @@ def populate_treeview(tree):
     # Read data from the CSV file and populate the TreeView
     with open("scores.csv", 'r') as csvfile:
         csv_reader = csv.reader(csvfile)
-        
-        # Read header row
-        header = next(csv_reader)
 
         # Populate the TreeView with data
         for row in csv_reader:
@@ -529,22 +528,22 @@ tree["columns"] = ("Team Name", "Total Score", "Player 1", "Game 1", "Player 2",
 tree.column("#0", width=0, stretch=tk.NO)  # hidden column
 tree.column("Team Name", anchor=tk.W, width=150)
 tree.column("Total Score", anchor=tk.CENTER, width=100)
-tree.column("Player 1", anchor=tk.CENTER, width=50)
+tree.column("Player 1", anchor=tk.CENTER, width=75)
 tree.column("Game 1", anchor=tk.CENTER, width=50)
-tree.column("Player 2", anchor=tk.CENTER, width=50)
+tree.column("Player 2", anchor=tk.CENTER, width=75)
 tree.column("Game 2", anchor=tk.CENTER, width=50)
-tree.column("Player 3", anchor=tk.CENTER, width=50)
+tree.column("Player 3", anchor=tk.CENTER, width=75)
 tree.column("Game 3", anchor=tk.CENTER, width=50)
 
 # Column headings
 tree.heading("#0", text="", anchor=tk.W)
 tree.heading("Team Name", text="Team Name", anchor=tk.W)
 tree.heading("Total Score", text="Total Score", anchor=tk.CENTER)
-tree.heading("Player 1", text="Player 1", anchor=tk.CENTER)
+tree.heading("Player 1", text="Team Member", anchor=tk.CENTER)
 tree.heading("Game 1", text="Game 1", anchor=tk.CENTER)
-tree.heading("Player 2", text="Player 2", anchor=tk.CENTER)
+tree.heading("Player 2", text="Team Member", anchor=tk.CENTER)
 tree.heading("Game 2", text="Game 2", anchor=tk.CENTER)
-tree.heading("Player 3", text="Player 3", anchor=tk.CENTER)
+tree.heading("Player 3", text="Team Member", anchor=tk.CENTER)
 tree.heading("Game 3", text="Game 3", anchor=tk.CENTER)
 
 # grid treeview
@@ -554,6 +553,6 @@ tree.grid(row=1, column=0, sticky="nsew")
 # root.grid_rowconfigure(0, weight=1)
 # root.grid_columnconfigure(0, weight=1)
 
-raise_frame(LoginFrame)
+raise_frame(RegistrationFrame)
 # raise_leadeboard_frame()
 root.mainloop()
