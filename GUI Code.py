@@ -16,7 +16,8 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter.messagebox import askyesno
 import string
-from tkinter import Canvas
+import pandas as pd
+
 
 
 #changes the users view
@@ -46,6 +47,8 @@ def raise_leadeboard_frame():
     LeaderboardFrame.tkraise()
     record_score(theTeamName, scores)
     populate_treeview(tree)
+    populate_treeview2(tree2)
+    calc_adverage_score()
 
 # record score
 def record_score(name, scores):
@@ -53,6 +56,16 @@ def record_score(name, scores):
     with open("scores.csv", 'a', newline='') as csvfile:
         csv_writer = csv.writer(csvfile)
         csv_writer.writerow([name, total, scores[0][0], scores[0][1], scores[1][0], scores[1][1], scores[2][0], scores[2][1]])
+
+def calc_adverage_score():
+    df = pd.read_csv('scores.csv')
+    average1 = df.iloc[:, 3].mean()
+    average2 = df.iloc[:, 5].mean()
+    average3 = df.iloc[:, 7].mean()
+
+    game1adv.set(int(average1))
+    game2adv.set(int(average2))
+    game3adv.set(int(average3))
 
 #clear the login frame
 def clearloginframe():
@@ -153,7 +166,7 @@ def clearregistration():
 
 # intialize variables
 global scores
-scores = []
+scores = [("leo", 99), ("leo", 99), ("leo", 99)]
 theTeamName = "leomcl"
                         
 root = Tk()
@@ -303,8 +316,6 @@ for i, question_data in enumerate(quiz_data):
     # Create a dropdown menu with options
     dropdown = ttk.Combobox(Challenge2Frame, values=options, textvariable=user_answer)
     dropdown.grid(row=i+2, column=1, pady=10)
-
-import threading
 
 # Create a StringVar to store the remaining time
 remaining_time = StringVar()
@@ -500,7 +511,10 @@ proceed_to_leaderboard_button.grid(row=4, column=0, columnspan=2, pady=10)
 # variables for leadboard frame
 
 # fucntions for leaderbaord frame
+import csv
+
 def populate_treeview(tree):
+    # Clear existing rows in the treeview
     for row in tree.get_children():
         tree.delete(row)
 
@@ -508,9 +522,38 @@ def populate_treeview(tree):
     with open("scores.csv", 'r') as csvfile:
         csv_reader = csv.reader(csvfile)
 
-        # Populate the TreeView with data
+        # Skip header
+        next(csv_reader)
+
+        # Read data into a list of tuples
+        data = [row for row in csv_reader]
+
+        # Sort data based on the first column (assuming it contains numerical values)
+        sorted_data = sorted(data, key=lambda x: int(x[1]), reverse=True) 
+
+        # Populate the TreeView with sorted data
+        for row in sorted_data:
+            # Insert only the first two columns into the TreeView
+            tree.insert("", "end", values=(row[0], row[1]))
+
+
+def populate_treeview2(tree2):
+    # Clear existing rows in the treeview
+    for row in tree2.get_children():
+        tree2.delete(row)
+
+    # Read data from the CSV file and populate the TreeView
+    with open("scores.csv", 'r') as csvfile:
+        csv_reader = csv.reader(csvfile)
+
+        # Skip header
+        next(csv_reader)
+
+        # Populate the TreeView with data from the first two columns
         for row in csv_reader:
-            tree.insert("", "end", values=row)
+            # Insert only the first two columns into the TreeView
+            tree2.insert("", "end", values=(row[2], row[3], row[4], row[5], row[6], row[7]))
+
 
 
 # gui
@@ -518,41 +561,76 @@ def populate_treeview(tree):
 LeaderboardFrame_label = Label(LeaderboardFrame, text = 'Decrypt Escape Rooms - Leaderboard', fg = '#e9cdb3', bg = '#070945', font = 'Verdana 36 bold')
 LeaderboardFrame_label.grid(row = 0, column = 0, columnspan = 2)
 
-# Create widget
+# team tree
 tree = ttk.Treeview(LeaderboardFrame)
 
 # Define columns
-tree["columns"] = ("Team Name", "Total Score", "Player 1", "Game 1", "Player 2",  "Game 2", "Player 3", "Game 3")
+tree["columns"] = ("Team Name", "Total Score")
 
 # Column configurations
 tree.column("#0", width=0, stretch=tk.NO)  # hidden column
 tree.column("Team Name", anchor=tk.W, width=150)
 tree.column("Total Score", anchor=tk.CENTER, width=100)
-tree.column("Player 1", anchor=tk.CENTER, width=75)
-tree.column("Game 1", anchor=tk.CENTER, width=50)
-tree.column("Player 2", anchor=tk.CENTER, width=75)
-tree.column("Game 2", anchor=tk.CENTER, width=50)
-tree.column("Player 3", anchor=tk.CENTER, width=75)
-tree.column("Game 3", anchor=tk.CENTER, width=50)
 
 # Column headings
 tree.heading("#0", text="", anchor=tk.W)
 tree.heading("Team Name", text="Team Name", anchor=tk.W)
 tree.heading("Total Score", text="Total Score", anchor=tk.CENTER)
-tree.heading("Player 1", text="Team Member", anchor=tk.CENTER)
-tree.heading("Game 1", text="Game 1", anchor=tk.CENTER)
-tree.heading("Player 2", text="Team Member", anchor=tk.CENTER)
-tree.heading("Game 2", text="Game 2", anchor=tk.CENTER)
-tree.heading("Player 3", text="Team Member", anchor=tk.CENTER)
-tree.heading("Game 3", text="Game 3", anchor=tk.CENTER)
 
 # grid treeview
-tree.grid(row=1, column=0, sticky="nsew")
+tree.grid(row=1, column=0)
 
-# # Configure row and column weights for resizing (idk if u want or not)  
-# root.grid_rowconfigure(0, weight=1)
-# root.grid_columnconfigure(0, weight=1)
+# player tree
+# team tree
+tree2 = ttk.Treeview(LeaderboardFrame)
 
-raise_frame(RegistrationFrame)
-# raise_leadeboard_frame()
+# Define columns
+tree2["columns"] = ("Player 1", "Game 1", "Player 2",  "Game 2", "Player 3", "Game 3")
+
+# Column configurations
+tree2.column("#0", width=0, stretch=tk.NO)  # hidden column
+tree2.column("Player 1", anchor=tk.CENTER, width=75)
+tree2.column("Game 1", anchor=tk.CENTER, width=50)
+tree2.column("Player 2", anchor=tk.CENTER, width=75)
+tree2.column("Game 2", anchor=tk.CENTER, width=50)
+tree2.column("Player 3", anchor=tk.CENTER, width=75)
+tree2.column("Game 3", anchor=tk.CENTER, width=50)
+
+# Column headings
+tree2.heading("#0", text="", anchor=tk.W)
+tree2.heading("Player 1", text="Team Member", anchor=tk.CENTER)
+tree2.heading("Game 1", text="Game 1", anchor=tk.CENTER)
+tree2.heading("Player 2", text="Team Member", anchor=tk.CENTER)
+tree2.heading("Game 2", text="Game 2", anchor=tk.CENTER)
+tree2.heading("Player 3", text="Team Member", anchor=tk.CENTER)
+tree2.heading("Game 3", text="Game 3", anchor=tk.CENTER)
+
+tree2.grid(row=2, column=0, sticky="nsew")
+# adverage times leaderBoardFrame
+# adverage time variables
+game1adv = StringVar()
+game2adv = StringVar()
+game3adv = StringVar()
+
+
+game1_adverage_label = Label(LeaderboardFrame, text = 'Game 1 Adverage:', fg = '#e9cdb3', bg = '#070945', font = 'Verdana 16 bold')
+game1_adverage_label.grid(row = 3, column = 0)
+
+game1_adverageData_label = Label(LeaderboardFrame, textvariable=game1adv, fg = '#e9cdb3', bg = '#070945', font = 'Verdana 16 bold')
+game1_adverageData_label.grid(row = 3, column = 1)
+
+game2_adverage_label = Label(LeaderboardFrame, text = 'Game 2 Adverage:', fg = '#e9cdb3', bg = '#070945', font = 'Verdana 16 bold')
+game2_adverage_label.grid(row = 4, column = 0)
+
+game2_adverageData_label = Label(LeaderboardFrame, textvariable=game2adv, fg = '#e9cdb3', bg = '#070945', font = 'Verdana 16 bold')
+game2_adverageData_label.grid(row = 4, column = 1)
+
+game3_adverage_label = Label(LeaderboardFrame, text = 'Game 3 Adverage:', fg = '#e9cdb3', bg = '#070945', font = 'Verdana 16 bold')
+game3_adverage_label.grid(row = 5, column = 0)
+
+game3_adverageData_label = Label(LeaderboardFrame, textvariable=game3adv, fg = '#e9cdb3', bg = '#070945', font = 'Verdana 16 bold')
+game3_adverageData_label.grid(row = 5, column = 1)
+
+# raise_frame()
+raise_leadeboard_frame()
 root.mainloop()
