@@ -67,6 +67,42 @@ def calc_adverage_score():
     game2adv.set(int(average2))
     game3adv.set(int(average3))
 
+def next_team():
+    
+    scores.clear()
+
+    # reset c1
+    global start1_time, test1_started
+    test1_started = False
+    start1_time = 0
+    green_box.config(bg="red")
+    start_button.config(state="normal")
+    proceed_button.config(state="disabled")
+
+    # reset c2
+    for dropdown in dropdowns:
+        dropdown.set('')
+
+    # reset c3
+    score_label["text"] = f"Score: {0}"
+
+    clearregistration()
+    raise_frame(RegistrationFrame)
+
+def clear_data():
+    # Read the header from the CSV file
+    with open('scores.csv', 'r', newline='') as file:
+        reader = csv.reader(file)
+        header = next(reader)  # Read the header
+
+    # Truncate the CSV file while preserving the header
+    with open('scores.csv', 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(header)  # Write the header back to the file
+
+    clearregistration()
+    raise_frame(RegistrationFrame)
+
 #clear the login frame
 def clearloginframe():
     username.set('')
@@ -166,8 +202,8 @@ def clearregistration():
 
 # intialize variables
 global scores
-scores = [("leo", 99), ("leo", 99), ("leo", 99)]
-theTeamName = "leomcl"
+scores = []
+theTeamName = ""
                         
 root = Tk()
 root.title('Escape Room')
@@ -306,8 +342,10 @@ def check_answers():
 
 
 # Create labels and dropdown menus for each question
+dropdowns = []
+
 for i, question_data in enumerate(quiz_data):
-    question_label = Label(Challenge2Frame, text=question_data['question'], fg='#e9cdb3', bg='#070945', font='Verdana 12 bold')
+    question_label = tk.Label(Challenge2Frame, text=question_data['question'], fg='#e9cdb3', bg='#070945', font='Verdana 12 bold')
     question_label.grid(row=i+2, column=0, sticky='W', pady=5)
    
     options = question_data['options']
@@ -316,6 +354,9 @@ for i, question_data in enumerate(quiz_data):
     # Create a dropdown menu with options
     dropdown = ttk.Combobox(Challenge2Frame, values=options, textvariable=user_answer)
     dropdown.grid(row=i+2, column=1, pady=10)
+    
+    # Append the dropdown widget to the list
+    dropdowns.append(dropdown)
 
 # Create a StringVar to store the remaining time
 remaining_time = StringVar()
@@ -435,7 +476,6 @@ def start_game():
 def end_game():
     global game_running
     game_running = False
-    print("endeddddddddddd")
     score = (moleScore/30) * 100
     messagebox.showinfo("Game Over", f"Game Over! Your final score is {moleScore}")
     scores.append((selected, int(score)))
@@ -612,7 +652,6 @@ game1adv = StringVar()
 game2adv = StringVar()
 game3adv = StringVar()
 
-
 game1_adverage_label = Label(LeaderboardFrame, text = 'Game 1 Adverage:', fg = '#e9cdb3', bg = '#070945', font = 'Verdana 16 bold')
 game1_adverage_label.grid(row = 3, column = 0)
 
@@ -631,6 +670,11 @@ game3_adverage_label.grid(row = 5, column = 0)
 game3_adverageData_label = Label(LeaderboardFrame, textvariable=game3adv, fg = '#e9cdb3', bg = '#070945', font = 'Verdana 16 bold')
 game3_adverageData_label.grid(row = 5, column = 1)
 
-# raise_frame()
-raise_leadeboard_frame()
+next_team_button = Button(LeaderboardFrame, text='Next Team', fg='#070945', bg='#e9cdb3', width=30, font='Verdana 10 bold', command=next_team)
+next_team_button.grid(row=4, column=2)
+
+clear_data_button = Button(LeaderboardFrame, text='Clear Data', fg='#070945', bg='#e9cdb3', width=30, font='Verdana 10 bold', command=clear_data)
+clear_data_button.grid(row=5, column=2)
+
+raise_frame(LoginFrame)
 root.mainloop()
