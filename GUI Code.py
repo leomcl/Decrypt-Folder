@@ -21,6 +21,8 @@ def raise_frame(frame):
 def raise_game_frame(frame):
     print(thePlayers)
     selected_player = StringVar()
+    player_label = Label(frame, text = 'Select Player: ', fg = '#e9cdb3', bg = '#070945', font = 'Verdana 24 bold')
+    player_label.grid(row = 0, column = 4, padx=110)
     dropdown = ttk.Combobox(frame, values=thePlayers, textvariable=selected_player)
     dropdown.grid(row=0, column=10, pady=10)
 
@@ -42,7 +44,7 @@ def raise_leadeboard_frame():
     record_score(theTeamName, scores)
     populate_treeview(tree)
     populate_treeview2(tree2)
-    calc_adverage_score()
+    calc_average_score()
 
 # record score
 def record_score(name, scores):
@@ -51,15 +53,15 @@ def record_score(name, scores):
         csv_writer = csv.writer(csvfile)
         csv_writer.writerow([name, total, scores[0][0], scores[0][1], scores[1][0], scores[1][1], scores[2][0], scores[2][1]])
 
-def calc_adverage_score():
+def calc_average_score():
     df = pd.read_csv('scores.csv')
     average1 = df.iloc[:, 3].mean()
     average2 = df.iloc[:, 5].mean()
     average3 = df.iloc[:, 7].mean()
 
-    game1adv.set(int(average1))
-    game2adv.set(int(average2))
-    game3adv.set(int(average3))
+    game1ave.set(int(average1))
+    game2ave.set(int(average2))
+    game3ave.set(int(average3))
 
 def next_team():
     
@@ -98,9 +100,9 @@ def clear_data():
     populate_treeview(tree)
     populate_treeview2(tree2)
     
-    game1adv.set('')
-    game2adv.set('')
-    game3adv.set('')
+    game1ave.set('')
+    game2ave.set('')
+    game3ave.set('')
 
 #clear the login frame
 def clearloginframe():
@@ -231,7 +233,7 @@ loginimage = 'decrypt_logo.png'
 loginlogo = PhotoImage(file = loginimage)
 smallerloginlogo = loginlogo.subsample(1,1)
 loginlogolabel = Label(LoginFrame, image = smallerloginlogo)
-# loginlogolabel.grid(row =1, column =0, columnspan = 2)
+loginlogolabel.grid(row =1, column =0, columnspan = 2)
 
 
 #enter username and password
@@ -267,7 +269,7 @@ regimage = 'team logo 1.png'
 escapelogo = PhotoImage(file = regimage)
 smallerescapelogo = escapelogo.subsample(1,1)
 reglogolabel = Label(RegistrationFrame, image = smallerescapelogo)
-# reglogolabel.grid(row = 1, column = 0, columnspan = 2)
+reglogolabel.grid(row = 1, column = 0, columnspan = 2)
 
 #insert labels and entry boxes
 teamnamelabel = Label(RegistrationFrame, text = 'Enter team name: ', fg = '#e9cdb3', bg = '#070945', font = 'Verdana 24 bold')
@@ -370,7 +372,7 @@ for i, question_data in enumerate(quiz_data):
 
 # Create a label for the timer
 timer_label = Label(Challenge2Frame, text="You have 60 seconds!", fg='#070945', bg='#e9cdb3', font='Verdana 18 bold')
-timer_label.grid(row= 1, column= 1, columnspan=2, pady=10)
+timer_label.grid(row= 1, column= 2, pady=10, padx=15)
 
 # Function to start the timer
 def start_timer():
@@ -456,7 +458,7 @@ proceed_button.grid(row=5, column=0, pady=10)
 #variables for challange 3
 score = 0
 game_running = False
-game_duration = 5  # in seconds
+game_duration = 60  # in seconds
 mole_buttons = []
 
 # fucntions for challange 3
@@ -471,7 +473,7 @@ def start_game():
 def end_game():
     global game_running
     game_running = False
-    score = (moleScore/30) * 100
+    score = (moleScore/100) * 100
     messagebox.showinfo("Game Over", f"Game Over! You hit {moleScore} moles. \n Your final score is {int(score)}!")
     scores.append((selected, int(score)))
     proceed_to_leaderboard_button.config(state="normal")
@@ -612,7 +614,7 @@ tree.heading("Team Name", text="Team Name", anchor=tk.W)
 tree.heading("Total Score", text="Total Score", anchor=tk.CENTER)
 
 # grid treeview
-tree.grid(row=1, column=0)
+tree.grid(row=1, column=0, sticky='w', padx=40, pady=10, rowspan=3)
 
 # player tree
 # team tree
@@ -639,36 +641,36 @@ tree2.heading("Game 2", text="Game 2", anchor=tk.CENTER)
 tree2.heading("Player 3", text="Team Member", anchor=tk.CENTER)
 tree2.heading("Game 3", text="Game 3", anchor=tk.CENTER)
 
-tree2.grid(row=2, column=0, sticky="nsew")
-# adverage times leaderBoardFrame
-# adverage time variables
-game1adv = StringVar()
-game2adv = StringVar()
-game3adv = StringVar()
+tree2.grid(row=4, column=0, sticky="nsew", pady= 10, columnspan=5)
+# average times leaderBoardFrame
+# average time variables
+game1ave = StringVar()
+game2ave = StringVar()
+game3ave = StringVar()
 
-game1_adverage_label = Label(LeaderboardFrame, text = 'Game 1 Adverage:', fg = '#e9cdb3', bg = '#070945', font = 'Verdana 16 bold')
-game1_adverage_label.grid(row = 3, column = 0)
+game1_average_label = Label(LeaderboardFrame, text = 'Game 1 Average:', fg = '#e9cdb3', bg = '#070945', font = 'Verdana 16 bold')
+game1_average_label.grid(row = 1, column = 1, sticky= 'w')
 
-game1_adverageData_label = Label(LeaderboardFrame, textvariable=game1adv, fg = '#e9cdb3', bg = '#070945', font = 'Verdana 16 bold')
-game1_adverageData_label.grid(row = 3, column = 1)
+game1_averageData_label = Label(LeaderboardFrame, textvariable=game1ave, fg = '#e9cdb3', bg = '#070945', font = 'Verdana 16 bold')
+game1_averageData_label.grid(row = 1, column = 2, sticky= 'w')
 
-game2_adverage_label = Label(LeaderboardFrame, text = 'Game 2 Adverage:', fg = '#e9cdb3', bg = '#070945', font = 'Verdana 16 bold')
-game2_adverage_label.grid(row = 4, column = 0)
+game2_average_label = Label(LeaderboardFrame, text = 'Game 2 Average:', fg = '#e9cdb3', bg = '#070945', font = 'Verdana 16 bold')
+game2_average_label.grid(row = 2, column = 1, sticky= 'w')
 
-game2_adverageData_label = Label(LeaderboardFrame, textvariable=game2adv, fg = '#e9cdb3', bg = '#070945', font = 'Verdana 16 bold')
-game2_adverageData_label.grid(row = 4, column = 1)
+game2_averageData_label = Label(LeaderboardFrame, textvariable=game2ave, fg = '#e9cdb3', bg = '#070945', font = 'Verdana 16 bold')
+game2_averageData_label.grid(row = 2, column = 2, sticky= 'w')
 
-game3_adverage_label = Label(LeaderboardFrame, text = 'Game 3 Adverage:', fg = '#e9cdb3', bg = '#070945', font = 'Verdana 16 bold')
-game3_adverage_label.grid(row = 5, column = 0)
+game3_average_label = Label(LeaderboardFrame, text = 'Game 3 Average:', fg = '#e9cdb3', bg = '#070945', font = 'Verdana 16 bold')
+game3_average_label.grid(row = 3, column = 1, sticky= 'w')
 
-game3_adverageData_label = Label(LeaderboardFrame, textvariable=game3adv, fg = '#e9cdb3', bg = '#070945', font = 'Verdana 16 bold')
-game3_adverageData_label.grid(row = 5, column = 1)
+game3_averageData_label = Label(LeaderboardFrame, textvariable=game3ave, fg = '#e9cdb3', bg = '#070945', font = 'Verdana 16 bold')
+game3_averageData_label.grid(row = 3, column = 2, sticky= 'w')
 
-next_team_button = Button(LeaderboardFrame, text='Next Team', fg='#070945', bg='#e9cdb3', width=30, font='Verdana 10 bold', command=next_team)
-next_team_button.grid(row=4, column=2)
+next_team_button = Button(LeaderboardFrame, text='Next Team', fg='#070945', bg='#e9cdb3', width=30, font='Verdana 18 bold', command=next_team)
+next_team_button.grid(row=5, column=2, sticky= 'w',ipadx=10, ipady=10, padx=10, pady=10)
 
-clear_data_button = Button(LeaderboardFrame, text='Clear Data', fg='#070945', bg='#e9cdb3', width=30, font='Verdana 10 bold', command=clear_data)
-clear_data_button.grid(row=5, column=2)
+clear_data_button = Button(LeaderboardFrame, text='Clear Data', fg='#070945', bg='#e9cdb3', width=30, font='Verdana 18 bold', command=clear_data)
+clear_data_button.grid(row=6, column=2, sticky= 'w',ipadx=10, ipady=10, padx=10, pady=10)
 
 raise_frame(LoginFrame)
 root.mainloop()
