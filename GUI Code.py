@@ -75,6 +75,7 @@ def next_team():
     global start1_time, test1_started
     test1_started = False
     start1_time = 0
+    reaction_time_label.config(text="Reaction Time: ")
     green_box.config(bg="red")
     start_button.config(state="normal")
     proceed_button.config(state="disabled")
@@ -250,7 +251,7 @@ usernameentry.grid(row = 2, column = 1, pady = 10)
 password = StringVar()
 loginpasswordlabel = Label(LoginFrame, text = 'Password: ', fg = '#070945', bg = '#e9cdb3', font = 'Verdana 24 bold')
 loginpasswordlabel.grid(row = 3, column = 0,sticky = 'W', pady = 10)
-passwordentry = Entry(LoginFrame, textvariable = password, font = 'Verdana 22', width = 20)
+passwordentry = Entry(LoginFrame, textvariable = password, font = 'Verdana 22', show='*', width = 20)
 passwordentry.grid(row = 3, column = 1, pady = 10)
 
 #create buttons for login screen
@@ -377,7 +378,7 @@ for i, question_data in enumerate(quiz_data):
 timer_label = Label(Challenge2Frame, text="You have 60 seconds!", fg='#070945', bg='#e9cdb3', font='Verdana 18 bold')
 timer_label.grid(row= 1, column= 1, columnspan=2, pady=10)
 
-# Function to start the timer thread
+# Function to start the timer
 def start_timer():
     global current_time1
     current_time1 = datetime.datetime.now()
@@ -477,7 +478,7 @@ def end_game():
     global game_running
     game_running = False
     score = (moleScore/30) * 100
-    messagebox.showinfo("Game Over", f"Game Over! You hit {moleScore} moles. \n Your final score is {score}!")
+    messagebox.showinfo("Game Over", f"Game Over! You hit {moleScore} moles. \n Your final score is {int(score)}!")
     scores.append((selected, int(score)))
     proceed_to_leaderboard_button.config(state="normal")
     reset_moles()
@@ -676,5 +677,5 @@ next_team_button.grid(row=4, column=2)
 clear_data_button = Button(LeaderboardFrame, text='Clear Data', fg='#070945', bg='#e9cdb3', width=30, font='Verdana 10 bold', command=clear_data)
 clear_data_button.grid(row=5, column=2)
 
-raise_frame(Challenge2Frame)
+raise_frame(LoginFrame)
 root.mainloop()
