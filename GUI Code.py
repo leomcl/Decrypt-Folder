@@ -2,23 +2,17 @@
 from tkinter import *
 from tkinter import ttk
 import csv
-import sys
 import random
-import tkinter.simpledialog
 import datetime
 import time
 from tkinter import messagebox
-import math
 from datetime import date
 import tkinter as tk
 from tkinter.simpledialog import askstring
 import tkinter as tk
 from tkinter import ttk
 from tkinter.messagebox import askyesno
-import string
 import pandas as pd
-
-
 
 #changes the users view
 def raise_frame(frame):
@@ -552,7 +546,6 @@ proceed_to_leaderboard_button.grid(row=4, column=0, columnspan=2, pady=10)
 # variables for leadboard frame
 
 # fucntions for leaderbaord frame
-import csv
 
 def populate_treeview(tree):
     # Clear existing rows in the treeview
