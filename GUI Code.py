@@ -19,7 +19,6 @@ def raise_frame(frame):
     frame.tkraise()
 
 def raise_game_frame(frame):
-    print(thePlayers)
     selected_player = StringVar()
     player_label = Label(frame, text = 'Select Player: ', fg = '#e9cdb3', bg = '#070945', font = 'Verdana 24 bold')
     player_label.grid(row = 0, column = 4, padx=110)
@@ -32,7 +31,6 @@ def raise_game_frame(frame):
         if selected in thePlayers:
             thePlayers.remove(selected)
             dropdown['values'] = thePlayers
-            print(f"Selected player: {selected}")
 
     dropdown.bind("<<ComboboxSelected>>", on_player_selected)
 
