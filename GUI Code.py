@@ -362,29 +362,18 @@ for i, question_data in enumerate(quiz_data):
     # Append the dropdown widget to the list
     dropdowns.append(dropdown)
 
-# Create a StringVar to store the remaining time
-remaining_time = StringVar()
-remaining_time.set("Time: 60")
-
-# Function to update the timer label
-def update_timer():
-    time_left = 60
-    while time_left > 0:
-        remaining_time.set(f"Time: {time_left}")
-        time_left -= 1
-        time.sleep(1)
-    messagebox.showinfo('Time Up', 'Time is up!')
-    check_answers()  # Automatically check answers when time is up
-
 # Create a label for the timer
-timer_label = Label(Challenge2Frame, textvariable=remaining_time, fg='#070945', bg='#e9cdb3', font='Verdana 18 bold')
+timer_label = Label(Challenge2Frame, text="You have 60 seconds!", fg='#070945', bg='#e9cdb3', font='Verdana 18 bold')
 timer_label.grid(row= 1, column= 1, columnspan=2, pady=10)
 
 # Function to start the timer thread
 def start_timer():
-    # timer_thread = threading.Thread(target=update_timer)
-    # timer_thread.start()
-    pass
+    root.after(60000, end_game2)
+    
+def end_game2():
+    messagebox.showinfo('Time Up', 'Time is up!')
+    check_answers()  # Automatically check answers when time is up
+
 
 # Create a submit button to check answers
 submit_button = Button(Challenge2Frame, text='Submit', fg='#070945', bg='#e9cdb3', width=15, font='Verdana 18 bold', command=check_answers)
