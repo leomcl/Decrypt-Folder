@@ -100,8 +100,12 @@ def clear_data():
         writer = csv.writer(file)
         writer.writerow(header)  # Write the header back to the file
 
-    clearregistration()
-    raise_frame(RegistrationFrame)
+    populate_treeview(tree)
+    populate_treeview2(tree2)
+    
+    game1adv.set('')
+    game2adv.set('')
+    game3adv.set('')
 
 #clear the login frame
 def clearloginframe():
