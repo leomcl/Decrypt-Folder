@@ -333,14 +333,25 @@ user_answers = [StringVar() for _ in range(len(quiz_data))]
 
 # Function to check answers
 def check_answers():
-    challenge1score = 0
-    for i, question_data in enumerate(quiz_data):
-        user_answer = user_answers[i].get()
-        correct_option = question_data['correct_option']
-        if user_answer == correct_option:
-            challenge1score += 1
+    current_time2 = datetime.datetime.now()
+    # Calculate the difference
+    time_difference = current_time2 - current_time1
 
-    messagebox.showinfo('Quiz Result', f'Your score: {challenge1score}/{len(quiz_data)}')
+    # Get the difference in seconds
+    difference_in_seconds = time_difference.total_seconds()
+    if (difference_in_seconds >= 60):
+            messagebox.showinfo('Over 60 seconds', f'Fail!\nScore: 0')
+            challenge1score = 0
+    else:
+        challenge1score = 0
+        for i, question_data in enumerate(quiz_data):
+            user_answer = user_answers[i].get()
+            correct_option = question_data['correct_option']
+            if user_answer == correct_option:
+                challenge1score += 1
+
+        messagebox.showinfo('Quiz Result', f'Your score: {challenge1score}/{len(quiz_data)}')
+
     score = (challenge1score/len(quiz_data)) * 100
     scores.append((selected, int(score)))
 
@@ -368,13 +379,9 @@ timer_label.grid(row= 1, column= 1, columnspan=2, pady=10)
 
 # Function to start the timer thread
 def start_timer():
-    root.after(60000, end_game2)
+    global current_time1
+    current_time1 = datetime.datetime.now()
     
-def end_game2():
-    messagebox.showinfo('Time Up', 'Time is up!')
-    check_answers()  # Automatically check answers when time is up
-
-
 # Create a submit button to check answers
 submit_button = Button(Challenge2Frame, text='Submit', fg='#070945', bg='#e9cdb3', width=15, font='Verdana 18 bold', command=check_answers)
 submit_button.grid(row=len(quiz_data) + 2, column=0, columnspan=2, pady=10)
@@ -463,14 +470,14 @@ def start_game():
     moleScore = 0
     game_running = True
     update_score_label()
-    root.after(game_duration * 1000, end_game)
+    Challenge3Frame.after(game_duration * 1000, end_game)
     randomly_populate_moles()
 
 def end_game():
     global game_running
     game_running = False
     score = (moleScore/30) * 100
-    messagebox.showinfo("Game Over", f"Game Over! Your final score is {moleScore}")
+    messagebox.showinfo("Game Over", f"Game Over! You hit {moleScore} moles. \n Your final score is {score}!")
     scores.append((selected, int(score)))
     proceed_to_leaderboard_button.config(state="normal")
     reset_moles()
@@ -669,5 +676,5 @@ next_team_button.grid(row=4, column=2)
 clear_data_button = Button(LeaderboardFrame, text='Clear Data', fg='#070945', bg='#e9cdb3', width=30, font='Verdana 10 bold', command=clear_data)
 clear_data_button.grid(row=5, column=2)
 
-raise_frame(LoginFrame)
+raise_frame(Challenge2Frame)
 root.mainloop()
